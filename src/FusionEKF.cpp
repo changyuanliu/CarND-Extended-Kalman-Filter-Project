@@ -148,8 +148,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
   //F_, x_, P_, Q_ should be updated before Predict()
   //x_, P_ will be updated after Predict()
+  cout << "x_ = " << ekf_.x_ << endl;
   ekf_.Predict();
-
+  cout << "x_ = " << ekf_.x_ << endl;
   /**
    * Update
    */
