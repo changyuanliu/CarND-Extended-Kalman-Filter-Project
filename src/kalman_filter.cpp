@@ -81,6 +81,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   z_pred << c1, 
             atan2(x_[1],x_[0]), 
             (x_[0]*x_[2]+x_[1]*x_[3])/c1;
+  cout << "z_pred = " << z_pred << endl;            
   VectorXd y = z_norm - z_pred;
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
