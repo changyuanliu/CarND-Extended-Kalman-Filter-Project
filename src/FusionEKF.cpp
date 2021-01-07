@@ -132,7 +132,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   float dt_3 = dt_2 * dt;
   float dt_4 = dt_3 * dt;
   // Modify the F matrix so that the time is integrated
-  cout << "ekf_.F_: " << ekf_.F_ << endl;
   ekf_.F_(0, 2) = dt;
   ekf_.F_(1, 3) = dt;
   cout << "ekf_.F_: " << ekf_.F_ << endl;
@@ -141,7 +140,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   float noise_ax = 9;
   float noise_ay = 9;
   // set the process covariance matrix Q  
-  cout << "ekf_.Q_: " << ekf_.Q_ << endl;
   ekf_.Q_ <<  dt_4/4*noise_ax, 0, dt_3/2*noise_ax, 0,
               0, dt_4/4*noise_ay, 0, dt_3/2*noise_ay,
               dt_3/2*noise_ax, 0, dt_2*noise_ax, 0,
