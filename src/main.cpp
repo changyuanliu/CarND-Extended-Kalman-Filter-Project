@@ -5,7 +5,6 @@
 #include "FusionEKF.h"
 #include "tools.h"
 
-
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 using std::string;
