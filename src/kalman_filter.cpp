@@ -83,9 +83,13 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   MatrixXd K = PHt * Si;
 
   //normalize the angle, y(1)
-  while(y(1)>M_PI)
+  while(y(1) > M_PI)
   {
     y(1) -= 2*M_PI;
+  }
+  while(y(1) < -M_PI)
+  {
+    y(1) += 2*M_PI;
   }
   //new estimate
   x_ = x_ + (K * y);
