@@ -62,7 +62,15 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   VectorXd z_pred = VectorXd(3);
   VectorXd z_norm = z;
   cout << "z = " << z << endl;
-  z_norm(1) = fmod(z_norm(1), 2*atan(1)*4);
+  while(z_norm(1)<-atan(1)*4)
+  {
+    z_norm(1) += 2*atan(1)*4;
+  }
+  while(z_norm(1)>atan(1)*4)
+  {
+    z_norm(1) -= 2*atan(1)*4;
+  }
+  // z_norm(1) = fmod(z_norm(1), 2*atan(1)*4);
   cout << "z_norm = " << z_norm << endl;
   // cout << "z = " << z << endl;
   z_pred << sqrt(x_[0]*x_[0]+x_[1]*x_[1]), 
