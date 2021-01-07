@@ -60,8 +60,8 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
    */
   VectorXd z_pred = VectorXd(3);
   cout << "z = " << z << endl;
-  // z(1) = fmod(z(1), M_PI);
-  // cout << "z = " << z << endl;
+  z(1) = fmod(z(1), M_PI);
+  cout << "z = " << z << endl;
   z_pred << sqrt(x_[0]*x_[0]+x_[1]*x_[1]), 
             atan2(x_[1],x_[0]), 
             (x_[0]*x_[2]+x_[1]*x_[3])/sqrt(x_[0]*x_[0]+x_[1]*x_[1]);
