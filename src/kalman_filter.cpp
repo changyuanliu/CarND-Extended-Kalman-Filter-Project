@@ -59,17 +59,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   /**
    * TODO: update the state by using Extended Kalman Filter equations
    */
-  // VectorXd z_norm = z;
   cout << "z = " << z << endl;
-  // while(z_norm(1)<-M_PI)
-  // {
-  //   z_norm(1) += 2*M_PI;
-  // }
-  // while(z_norm(1)>M_PI)
-  // {
-  //   z_norm(1) -= 2*M_PI;
-  // }
-  // cout << "z_norm = " << z_norm << endl;
   VectorXd z_pred = VectorXd(3);
   float c1 = sqrt(x_[0]*x_[0]+x_[1]*x_[1]);
   // check division by zero
@@ -81,7 +71,6 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   z_pred << c1, 
             atan2(x_[1],x_[0]), 
             (x_[0]*x_[2]+x_[1]*x_[3])/c1;
-  // z_pred = H_ * x_;
   cout << "z_pred = " << z_pred << endl;            
   VectorXd y = z - z_pred;
   MatrixXd Ht = H_.transpose();
