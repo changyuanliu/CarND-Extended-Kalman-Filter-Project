@@ -106,8 +106,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                  0;
       previous_timestamp_ = measurement_pack.timestamp_;
     }
-    cout << "timestamp: " <<  previous_timestamp_ << endl;
-    cout << "ekf.x_: " << ekf_.x_ << endl;
     // done initializing, no need to predict or update
     is_initialized_ = true;
     return;
@@ -134,7 +132,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   // Modify the F matrix so that the time is integrated
   ekf_.F_(0, 2) = dt;
   ekf_.F_(1, 3) = dt;
-  cout << "ekf_.F_: " << ekf_.F_ << endl;
 
   // set the acceleration noise components
   float noise_ax = 9;
@@ -144,13 +141,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
               0, dt_4/4*noise_ay, 0, dt_3/2*noise_ay,
               dt_3/2*noise_ax, 0, dt_2*noise_ax, 0,
               0, dt_3/2*noise_ay, 0, dt_2*noise_ay;
-  cout << "ekf_.Q_: " << ekf_.Q_ << endl;
 
   //F_, x_, P_, Q_ should be updated before Predict()
   //x_, P_ will be updated after Predict()
-  cout << "x_ = " << ekf_.x_ << endl;
   ekf_.Predict();
-  cout << "x_ = " << ekf_.x_ << endl;
+
   /**
    * Update
    */
