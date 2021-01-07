@@ -94,7 +94,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                  -measurement_pack.raw_measurements_[0]*sin(measurement_pack.raw_measurements_[1]), 
                  0, 
                  0;      
-      Hj_ = tools.CalculateJacobian(ekf_.x_);
+      // Hj_ = tools.CalculateJacobian(ekf_.x_);
       previous_timestamp_ = measurement_pack.timestamp_;
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
@@ -149,6 +149,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   cout << "ekf_.Q_: " << ekf_.Q_ << endl;
 
   //F_, x_, P_, Q_ should be updated before Predict()
+  //x_, P_ will be updated after Predict()
   ekf_.Predict();
 
   /**
@@ -160,7 +161,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * - Use the sensor type to perform the update step.
    * - Update the state and covariance matrices.
    */
-  //H_, x_, P_, R_ should be updated before Predict()
+  //measurement, H_, x_, P_, R_ should be updated before Predict()
+  //x_, P_ will be updated after Update()
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     // TODO: Radar updates
     ekf_.R_ = R_radar_;
