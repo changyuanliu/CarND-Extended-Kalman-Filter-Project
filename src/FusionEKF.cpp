@@ -94,7 +94,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                  -measurement_pack.raw_measurements_[0]*sin(measurement_pack.raw_measurements_[1]), 
                  0, 
                  0;      
-      Hj_ = tools.CalculateJacobian(ekf_.x_);
+      // Hj_ = tools.CalculateJacobian(ekf_.x_);
       previous_timestamp_ = measurement_pack.timestamp_;
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
@@ -106,8 +106,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                  0;
       previous_timestamp_ = measurement_pack.timestamp_;
     }
-    cout << "timestamp: " <<  previous_timestamp_ << endl;
-    cout << "ekf.x_: " << ekf_.x_ << endl;
     // done initializing, no need to predict or update
     is_initialized_ = true;
     return;
@@ -132,23 +130,20 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   float dt_3 = dt_2 * dt;
   float dt_4 = dt_3 * dt;
   // Modify the F matrix so that the time is integrated
-  cout << "ekf_.F_: " << ekf_.F_ << endl;
   ekf_.F_(0, 2) = dt;
   ekf_.F_(1, 3) = dt;
-  cout << "ekf_.F_: " << ekf_.F_ << endl;
 
   // set the acceleration noise components
   float noise_ax = 9;
   float noise_ay = 9;
   // set the process covariance matrix Q  
-  cout << "ekf_.Q_: " << ekf_.Q_ << endl;
   ekf_.Q_ <<  dt_4/4*noise_ax, 0, dt_3/2*noise_ax, 0,
               0, dt_4/4*noise_ay, 0, dt_3/2*noise_ay,
               dt_3/2*noise_ax, 0, dt_2*noise_ax, 0,
               0, dt_3/2*noise_ay, 0, dt_2*noise_ay;
-  cout << "ekf_.Q_: " << ekf_.Q_ << endl;
 
   //F_, x_, P_, Q_ should be updated before Predict()
+  //x_, P_ will be updated after Predict()
   ekf_.Predict();
 
   /**
@@ -160,10 +155,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * - Use the sensor type to perform the update step.
    * - Update the state and covariance matrices.
    */
-  //H_, x_, P_, R_ should be updated before Predict()
+  //measurement, H_, x_, P_, R_ should be updated before Predict()
+  //x_, P_ will be updated after Update()
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     // TODO: Radar updates
     ekf_.R_ = R_radar_;
+    Hj_ = tools.CalculateJacobian(ekf_.x_);
     ekf_.H_ = Hj_;
     ekf_.UpdateEKF(measurement_pack.raw_measurements_);
 
