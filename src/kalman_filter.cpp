@@ -70,7 +70,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     z_norm(1) -= 2*M_PI;
   }
   cout << "z_norm = " << z_norm << endl;
-
+  z = z_norm;
   VectorXd z_pred = VectorXd(3);
   float c1 = sqrt(x_[0]*x_[0]+x_[1]*x_[1]);
   z_pred << c1, 
